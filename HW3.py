@@ -34,8 +34,8 @@ class CouponDispenser:
         """
         # TODO: Implement per instructions
         self.coupon_cards = coupon_cards
-        customer_roster = []
-        issued_indices = []
+        self.customer_roster = []
+        self.issued_indices = []
     def __str__(self):
         """
         Return a single string with all coupons in coupon_cards joined by pipes ('|').
@@ -46,10 +46,12 @@ class CouponDispenser:
         """
         # TODO: Implement per instructions
         card_list = []
-        for i in len(self.coupon_cards):
+        for i in range(len(self.coupon_cards)):
             card_list.append(self.coupon_cards[i])
-
-        return "|".join(card_list)
+        if len(self.coupon_cards)<1:
+            return "|".join(card_list)
+        else:
+            return ""
 
     def issue_coupon(self, name):
         """
@@ -66,8 +68,20 @@ class CouponDispenser:
             str: message as described above
         """
         # TODO: Implement per instructions
-        pass
-
+        if len(self.coupon_cards)<1:
+            return "The box is empty."
+        if len(self.customer_roster)> 0:
+            for i in range(len(self.customer_roster)):
+                if self.customer_roster[i] == name:
+                    return f"That name already has a coupon: {self.issued_indices[i]}"
+                else:
+                    self.customer_roster.append(name)
+                    self.issued_indices.append(random.randint(0,len(self.coupon_cards)))
+                    return f"{name}: {self.issued_indices[-1]}"
+        else:
+            self.customer_roster.append(name)
+            self.issued_indices.append(random.randint(0,len(self.coupon_cards)))  
+            return f"{name}: {self.issued_indices[0]}"
     def distribute_session(self):
         """
         Run the "coupon dispenser" session.
@@ -121,10 +135,9 @@ def main():
     ]
 
     # Uncomment the lines below as you implement each function.
-    # box = CouponDispenser(coupon_cards)
+    box = CouponDispenser(coupon_cards)
     # box.distribute_session()
     # box.tally_distribution()
-    pass
 
 
 # -----------------------

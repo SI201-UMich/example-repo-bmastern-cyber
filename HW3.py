@@ -65,19 +65,21 @@ class CouponDispenser:
             str: message as described above
         """
         # TODO: Implement per instructions
+        repeated = False
         if len(self.coupon_cards)<1:
             return "The box is empty."
         if len(self.customer_roster)> 0:
             for i in range(len(self.customer_roster)):
                 if self.customer_roster[i] == name:
-                    return f"That name already has a coupon: {self.issued_indices[i]}"
-                else:
-                    self.customer_roster.append(name)
-                    self.issued_indices.append(random.randint(0,len(self.coupon_cards)))
-                    return f"{name}: {self.issued_indices[-1]}"
+                    print(f"That name already has a coupon: {self.issued_indices[i]}")
+                    repeated = True
+            if repeated == False:
+                self.customer_roster.append(name)
+                self.issued_indices.append(self.coupon_cards[random.randint(0,len(self.coupon_cards))])
+            return f"{name}: {self.issued_indices[-1]}"
         else:
             self.customer_roster.append(name)
-            self.issued_indices.append(random.randint(0,len(self.coupon_cards)))  
+            self.issued_indices.append(self.coupon_cards[random.randint(0,len(self.coupon_cards)-1)])  
             return f"{name}: {self.issued_indices[0]}"
     def distribute_session(self):
         """
@@ -99,12 +101,13 @@ class CouponDispenser:
         self.num = 1
         while self.num < 5:
             self.user_input = input(f"Round {self.round_number} - Enter a name (or a comma-seperated list), or type 'show' or 'exit': ")
+            self.round_number += 1
             if self.user_input == "exit":
                 print("Goodbye!")
                 break
             if self.user_input == "show":
-                for i in range(len(self.customer_roster())):
-                    print(f"{self.customer_roster[i]}: {self.issued_indices[i]} /n")
+                for i in range(len(self.customer_roster)):
+                    print(f"{self.customer_roster[i]}: {self.issued_indices[i]} \n")
             else:
                 self.new_names = self.user_input.split(",")
                 for i in self.new_names:
@@ -147,8 +150,8 @@ def main():
 
     # Uncomment the lines below as you implement each function.
     box = CouponDispenser(coupon_cards)
-    # box.distribute_session()
-    # box.tally_distribution()
+    box.distribute_session()
+    box.tally_distribution()
 
 
 # -----------------------

@@ -45,11 +45,8 @@ class CouponDispenser:
             str
         """
         # TODO: Implement per instructions
-        card_list = []
-        for i in range(len(self.coupon_cards)):
-            card_list.append(self.coupon_cards[i])
         if len(self.coupon_cards)<1:
-            return "|".join(card_list)
+            return "|".join(self.coupon_cards)
         else:
             return ""
 
@@ -98,7 +95,21 @@ class CouponDispenser:
         Reminder: Use lists only (no dictionaries).
         """
         # TODO: Implement per instructions 
-        pass
+        self.round_number = 1
+        self.num = 1
+        while self.num < 5:
+            self.user_input = input(f"Round {self.round_number} - Enter a name (or a comma-seperated list), or type 'show' or 'exit': ")
+            if self.user_input == "exit":
+                print("Goodbye!")
+                break
+            if self.user_input == "show":
+                for i in range(len(self.customer_roster())):
+                    print(f"{self.customer_roster[i]}: {self.issued_indices[i]} /n")
+            else:
+                self.new_names = self.user_input.split(",")
+                for i in self.new_names:
+                    if i.strip() != "":
+                        self.issue_coupon(i.strip())
 
     def tally_distribution(self):
         """
